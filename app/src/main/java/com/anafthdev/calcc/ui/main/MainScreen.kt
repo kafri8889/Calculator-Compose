@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.anafthdev.calcc.R
+import com.anafthdev.calcc.data.Calc
 import com.anafthdev.calcc.data.CalcCAction
 import com.anafthdev.calcc.data.CalcCButtons
 import com.anafthdev.calcc.foundation.extension.split
@@ -62,6 +63,12 @@ fun MainScreen() {
 			)
 			
 			CalcCButtons.values.split(4).second.forEachIndexed { i, list ->
+				
+				val r1 = list[0]!!
+				val r2 = list[1]!!
+				val r3 = list[2]!!
+				val r4 = list[3]!!
+				
 				Row(
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.Center,
@@ -80,7 +87,13 @@ fun MainScreen() {
 									enabled = true
 								).value else Color.Transparent
 							),
-							onClick = {  },
+							onClick = {
+								mainViewModel.dispatch(
+									MainAction.UpdateExpression(
+										mainViewModel.getExpression(expression, r1)
+									)
+								)
+							},
 							modifier = Modifier
 								.padding(8.dp)
 								.size(48.dp)
@@ -91,7 +104,7 @@ fun MainScreen() {
 									.fillMaxSize()
 							) {
 								Text(
-									text = list[0]!!.symbol,
+									text = r1.symbol,
 									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
@@ -112,7 +125,13 @@ fun MainScreen() {
 									enabled = true
 								).value else Color.Transparent
 							),
-							onClick = {  },
+							onClick = {
+								mainViewModel.dispatch(
+									MainAction.UpdateExpression(
+										mainViewModel.getExpression(expression, r2)
+									)
+								)
+							},
 							modifier = Modifier
 								.padding(8.dp)
 								.size(48.dp)
@@ -123,7 +142,7 @@ fun MainScreen() {
 									.fillMaxSize()
 							) {
 								Text(
-									text = list[1]!!.symbol,
+									text = r2.symbol,
 									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
@@ -144,7 +163,13 @@ fun MainScreen() {
 									enabled = true
 								).value else Color.Transparent
 							),
-							onClick = {  },
+							onClick = {
+								mainViewModel.dispatch(
+									MainAction.UpdateExpression(
+										mainViewModel.getExpression(expression, r3)
+									)
+								)
+							},
 							modifier = Modifier
 								.padding(8.dp)
 								.size(48.dp)
@@ -154,7 +179,7 @@ fun MainScreen() {
 								modifier = Modifier
 									.fillMaxSize()
 							) {
-								if (list[2]!! == CalcCAction.Delete()) {
+								if (r3 == CalcCAction.Delete()) {
 									Icon(
 										painter = painterResource(id = R.drawable.ic_delete),
 										contentDescription = null
@@ -179,7 +204,13 @@ fun MainScreen() {
 						Card(
 							shape = fully_rounded,
 							colors = CardDefaults.cardColors(),
-							onClick = {  },
+							onClick = {
+								mainViewModel.dispatch(
+									MainAction.UpdateExpression(
+										mainViewModel.getExpression(expression, r4)
+									)
+								)
+							},
 							modifier = Modifier
 								.padding(8.dp)
 								.size(48.dp)
@@ -190,7 +221,7 @@ fun MainScreen() {
 									.fillMaxSize()
 							) {
 								Text(
-									text = list[3]!!.symbol,
+									text = r4.symbol,
 									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
