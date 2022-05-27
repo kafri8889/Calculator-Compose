@@ -63,12 +63,15 @@ fun MainScreen() {
 			
 			CalcCButtons.values.split(4).second.forEachIndexed { i, list ->
 				Row(
+					verticalAlignment = Alignment.CenterVertically,
+					horizontalArrangement = Arrangement.Center,
 					modifier = Modifier
 						.fillMaxWidth()
 				) {
 					Box(
+						contentAlignment = Alignment.Center,
 						modifier = Modifier
-							.weight(1f, fill = true),
+							.weight(1f, fill = true)
 					) {
 						Card(
 							shape = fully_rounded,
@@ -89,7 +92,7 @@ fun MainScreen() {
 							) {
 								Text(
 									text = list[0]!!.symbol,
-									style = MaterialTheme.typography.bodyLarge.copy(
+									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
 								)
@@ -98,6 +101,7 @@ fun MainScreen() {
 					}
 					
 					Box(
+						contentAlignment = Alignment.Center,
 						modifier = Modifier
 							.weight(1f, fill = true),
 					) {
@@ -120,7 +124,7 @@ fun MainScreen() {
 							) {
 								Text(
 									text = list[1]!!.symbol,
-									style = MaterialTheme.typography.bodyLarge.copy(
+									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
 								)
@@ -129,6 +133,7 @@ fun MainScreen() {
 					}
 					
 					Box(
+						contentAlignment = Alignment.Center,
 						modifier = Modifier
 							.weight(1f, fill = true),
 					) {
@@ -157,7 +162,7 @@ fun MainScreen() {
 								} else {
 									Text(
 										text = list[2]!!.symbol,
-										style = MaterialTheme.typography.bodyLarge.copy(
+										style = MaterialTheme.typography.titleLarge.copy(
 											fontWeight = FontWeight.Bold
 										)
 									)
@@ -167,6 +172,7 @@ fun MainScreen() {
 					}
 					
 					Box(
+						contentAlignment = Alignment.Center,
 						modifier = Modifier
 							.weight(1f, fill = true),
 					) {
@@ -185,7 +191,7 @@ fun MainScreen() {
 							) {
 								Text(
 									text = list[3]!!.symbol,
-									style = MaterialTheme.typography.bodyLarge.copy(
+									style = MaterialTheme.typography.titleLarge.copy(
 										fontWeight = FontWeight.Bold
 									)
 								)
