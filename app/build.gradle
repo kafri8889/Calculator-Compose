@@ -89,6 +89,9 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
 
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
+
     // Other
     implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'net.objecthunter:exp4j:0.4.8'
