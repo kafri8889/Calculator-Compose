@@ -105,10 +105,14 @@ fun MainScreen() {
 				)
 				
 				Text(
-					text = expression,
+					text = expression,  // TODO: calculation result
 					style = MaterialTheme.typography.headlineSmall.copy(
-						color = MaterialTheme.typography.headlineSmall.color.copy(alpha = 0.6f)
-					)
+						color = Color.Gray
+					),
+					modifier = Modifier
+						.padding(
+							horizontal = 24.dp
+						)
 				)
 			}
 			
