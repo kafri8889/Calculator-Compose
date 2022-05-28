@@ -46,7 +46,18 @@ class MainViewModel @Inject constructor(
 		return when (calc) {
 			is CalcCNumber -> exp + calc.symbol
 			is CalcCOperation -> exp + calc.symbol
-			is CalcCAction -> exp + calc.symbol
+			is CalcCAction -> {
+				when (calc) {
+					is CalcCAction.Percent -> exp + calc.symbol
+					is CalcCAction.Decimal -> exp + calc.symbol
+					is CalcCAction.Clear -> ""
+					is CalcCAction.Delete -> {
+						if (exp.isNotBlank()) exp.substring(0, exp.length - 1)
+						else ""
+					}
+					else -> exp
+				}
+			}
 			else -> exp
 		}
 	}

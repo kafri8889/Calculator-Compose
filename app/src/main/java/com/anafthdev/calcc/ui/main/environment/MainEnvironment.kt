@@ -1,5 +1,7 @@
 package com.anafthdev.calcc.ui.main.environment
 
+import com.anafthdev.calcc.data.Calc
+import com.anafthdev.calcc.data.CalcCAction
 import com.anafthdev.calcc.foundation.di.DiName
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class MainEnvironment @Inject constructor(
-	@Named(DiName.DISPATCHER_IO) override val dispatcher: CoroutineDispatcher
+	@Named(DiName.DISPATCHER_MAIN) override val dispatcher: CoroutineDispatcher
 ): IMainEnvironment {
 	
 	private val _expression = MutableStateFlow("")

@@ -96,7 +96,7 @@ fun MainScreen() {
 							},
 							modifier = Modifier
 								.padding(8.dp)
-								.size(48.dp)
+								.size(56.dp)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -134,7 +134,7 @@ fun MainScreen() {
 							},
 							modifier = Modifier
 								.padding(8.dp)
-								.size(48.dp)
+								.size(56.dp)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -172,7 +172,7 @@ fun MainScreen() {
 							},
 							modifier = Modifier
 								.padding(8.dp)
-								.size(48.dp)
+								.size(56.dp)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -213,7 +213,7 @@ fun MainScreen() {
 							},
 							modifier = Modifier
 								.padding(8.dp)
-								.size(48.dp)
+								.size(56.dp)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
