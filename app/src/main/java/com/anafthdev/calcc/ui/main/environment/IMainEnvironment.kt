@@ -8,7 +8,11 @@ interface IMainEnvironment {
 	
 	val dispatcher: CoroutineDispatcher
 	
+	suspend fun calculate()
+	
 	suspend fun setExpression(exp: String)
+	
+	fun getCalculationResult(): Flow<String>
 	
 	fun getExpression(): Flow<String>
 	

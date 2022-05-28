@@ -39,6 +39,7 @@ fun MainScreen() {
 	val state by mainViewModel.state.collectAsState()
 	
 	val expression = state.expression
+	val calculationResult = state.calculationResult
 	
 	val systemUiController = rememberSystemUiController()
 	val expressionTextScrollState = rememberScrollState()
@@ -105,7 +106,7 @@ fun MainScreen() {
 				)
 				
 				Text(
-					text = expression,  // TODO: calculation result
+					text = calculationResult,
 					style = MaterialTheme.typography.headlineSmall.copy(
 						color = Color.Gray
 					),

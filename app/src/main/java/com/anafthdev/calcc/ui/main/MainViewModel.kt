@@ -23,9 +23,20 @@ class MainViewModel @Inject constructor(
 	init {
 		viewModelScope.launch(environment.dispatcher) {
 			environment.getExpression().collect { exp ->
+				environment.calculate()
 				setState {
 					copy(
 						expression = exp
+					)
+				}
+			}
+		}
+		
+		viewModelScope.launch(environment.dispatcher) {
+			environment.getCalculationResult().collect { result ->
+				setState {
+					copy(
+						calculationResult = result
 					)
 				}
 			}
@@ -55,7 +66,13 @@ class MainViewModel @Inject constructor(
 						if (exp.isNotBlank()) exp.substring(0, exp.length - 1)
 						else ""
 					}
-					else -> exp
+					is CalcCAction.Calculate -> {
+						viewModelScope.launch(environment.dispatcher) {
+							environment.calculate()
+						}
+						
+						return exp
+					}
 				}
 			}
 			else -> exp
