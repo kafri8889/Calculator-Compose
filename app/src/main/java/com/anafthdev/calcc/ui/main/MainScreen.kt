@@ -10,9 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,6 +25,7 @@ import com.anafthdev.calcc.data.Calc
 import com.anafthdev.calcc.data.CalcCAction
 import com.anafthdev.calcc.data.CalcCButtons
 import com.anafthdev.calcc.foundation.extension.split
+import com.anafthdev.calcc.foundation.window.LocalComponentSize
 import com.anafthdev.calcc.ui.theme.fully_rounded
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -33,6 +36,7 @@ fun MainScreen() {
 	val backgroundColorScheme = MaterialTheme.colorScheme.background
 	
 	val config = LocalConfiguration.current
+	val componentSize = LocalComponentSize.current
 	
 	val mainViewModel = hiltViewModel<MainViewModel>()
 	
@@ -89,8 +93,7 @@ fun MainScreen() {
 			)
 			
 			Column(
-				horizontalAlignment = Alignment.End,
-				modifier = Modifier
+				horizontalAlignment = Alignment.End
 			) {
 				Text(
 					text = expression,
@@ -143,6 +146,18 @@ fun MainScreen() {
 				.weight(1f)
 				.background(MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.18f))
 		) {
+			Box(
+				modifier = Modifier
+					.padding(8.dp)
+					.size(
+						width = 32.dp,
+						height = 4.dp
+					)
+					.clip(fully_rounded)
+					.background(Color.Gray)
+					.align(Alignment.CenterHorizontally)
+			)
+			
 			Spacer(
 				modifier = Modifier
 					.weight(1f)
@@ -193,7 +208,7 @@ fun MainScreen() {
 							onClick = updateExpressionR1,
 							modifier = Modifier
 								.padding(8.dp)
-								.size(56.dp)
+								.size(componentSize.calcCButton.width)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -232,7 +247,7 @@ fun MainScreen() {
 							onClick = updateExpressionR2,
 							modifier = Modifier
 								.padding(8.dp)
-								.size(56.dp)
+								.size(componentSize.calcCButton.width)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -271,7 +286,7 @@ fun MainScreen() {
 							onClick = updateExpressionR3,
 							modifier = Modifier
 								.padding(8.dp)
-								.size(56.dp)
+								.size(componentSize.calcCButton.width)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
@@ -313,7 +328,7 @@ fun MainScreen() {
 							onClick = updateExpressionR4,
 							modifier = Modifier
 								.padding(8.dp)
-								.size(56.dp)
+								.size(componentSize.calcCButton.width)
 						) {
 							Box(
 								contentAlignment = Alignment.Center,
