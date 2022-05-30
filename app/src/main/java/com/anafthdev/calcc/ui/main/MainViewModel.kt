@@ -1,10 +1,7 @@
 package com.anafthdev.calcc.ui.main
 
 import androidx.lifecycle.viewModelScope
-import com.anafthdev.calcc.data.Calc
-import com.anafthdev.calcc.data.CalcCAction
-import com.anafthdev.calcc.data.CalcCNumber
-import com.anafthdev.calcc.data.CalcCOperation
+import com.anafthdev.calcc.data.*
 import com.anafthdev.calcc.foundation.viewmodel.StatefulViewModel
 import com.anafthdev.calcc.ui.main.environment.IMainEnvironment
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +38,26 @@ class MainViewModel @Inject constructor(
 				}
 			}
 		}
+		
+		viewModelScope.launch(environment.dispatcher) {
+			environment.getInverse().collect { isInverse ->
+				setState {
+					copy(
+						isInverse = isInverse
+					)
+				}
+			}
+		}
+		
+		viewModelScope.launch(environment.dispatcher) {
+			environment.getUseDeg().collect { useDeg ->
+				setState {
+					copy(
+						useDeg = useDeg
+					)
+				}
+			}
+		}
 	}
 	
 	override fun dispatch(action: MainAction) {
@@ -56,24 +73,48 @@ class MainViewModel @Inject constructor(
 	fun getExpression(exp: String, calc: Calc): String {
 		return when (calc) {
 			is CalcCNumber -> exp + calc.symbol
+			is CalcCOperation.Sin -> exp + "${calc.symbol}("
+			is CalcCOperation.Cos -> exp + "${calc.symbol}("
+			is CalcCOperation.Tan -> exp + "${calc.symbol}("
+			is CalcCOperation.Log -> exp + "${calc.symbol}("
+			is CalcCOperation.NaturalLogarithm -> exp + "${calc.symbol}("
 			is CalcCOperation -> exp + calc.symbol
-			is CalcCAction -> {
-				when (calc) {
-					is CalcCAction.Percent -> exp + calc.symbol
-					is CalcCAction.Decimal -> exp + calc.symbol
-					is CalcCAction.Clear -> ""
-					is CalcCAction.Delete -> {
-						if (exp.isNotBlank()) exp.substring(0, exp.length - 1)
-						else ""
-					}
-					is CalcCAction.Calculate -> {
-						viewModelScope.launch(environment.dispatcher) {
-							environment.calculate()
-						}
-						
-						return exp
-					}
+			is CalcCAction.Percent -> exp + calc.symbol
+			is CalcCAction.Decimal -> exp + calc.symbol
+			is CalcCAction.Clear -> ""
+			is CalcCAction.Delete -> {
+				if (exp.isNotBlank()) exp.substring(0, exp.length - 1)
+				else ""
+			}
+			is CalcCAction.Calculate -> {
+				viewModelScope.launch(environment.dispatcher) {
+					environment.calculate()
 				}
+				
+				return exp
+			}
+			is CalcCAdvancedButton.OpenParenthesis -> exp + calc.symbol
+			is CalcCAdvancedButton.CloseParenthesis -> exp + calc.symbol
+			is CalcCAdvancedButton.Inverse -> {
+				viewModelScope.launch {
+					environment.setInverse()
+				}
+				
+				return exp
+			}
+			is CalcCAdvancedButton.Rad -> {
+				viewModelScope.launch {
+					environment.useRad()
+				}
+				
+				return exp
+			}
+			is CalcCAdvancedButton.Deg -> {
+				viewModelScope.launch {
+					environment.useDeg()
+				}
+				
+				return exp
 			}
 			else -> exp
 		}
