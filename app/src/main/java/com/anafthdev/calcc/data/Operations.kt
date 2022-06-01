@@ -2,6 +2,8 @@ package com.anafthdev.calcc.data
 
 object Operations {
 	
+	val LOG_10 = "log" to "log10"
+	
 	val DECIMAL = "," to "."
 	
 	val PERCENT = "%" to "!|"
@@ -17,6 +19,7 @@ object Operations {
 	val INVERSE_TAN = "tan-1" to "atan"
 	
 	val values = listOf(
+		LOG_10,
 		DECIMAL,
 		PERCENT,
 		DIVISION,
