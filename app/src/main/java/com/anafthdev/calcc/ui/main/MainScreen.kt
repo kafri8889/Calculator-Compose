@@ -1,13 +1,10 @@
 package com.anafthdev.calcc.ui.main
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
@@ -20,22 +17,14 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.anafthdev.calcc.R
 import com.anafthdev.calcc.data.Calc
-import com.anafthdev.calcc.data.CalcCAction
-import com.anafthdev.calcc.data.CalcCButtons
-import com.anafthdev.calcc.foundation.extension.split
-import com.anafthdev.calcc.foundation.window.LocalComponentSize
 import com.anafthdev.calcc.ui.main.component.CalcCAdvancedButton
 import com.anafthdev.calcc.ui.main.component.CalcCButtons
-import com.anafthdev.calcc.ui.theme.fully_rounded
 import com.anafthdev.calcc.ui.theme.superscriptSpanStyle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 

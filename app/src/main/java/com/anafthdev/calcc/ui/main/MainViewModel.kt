@@ -78,6 +78,9 @@ class MainViewModel @Inject constructor(
 			is CalcCOperation.Cos -> exp + "${calc.symbol}("
 			is CalcCOperation.Tan -> exp + "${calc.symbol}("
 			is CalcCOperation.Log -> exp + "${calc.symbol}("
+			is CalcCOperation.ArcSin -> exp + "${calc.operatorSymbol}("
+			is CalcCOperation.ArcCos -> exp + "${calc.operatorSymbol}("
+			is CalcCOperation.ArcTan -> exp + "${calc.operatorSymbol}("
 			is CalcCOperation.NaturalLogarithm -> exp + "${calc.symbol}("
 			is CalcCOperation.Pow -> exp.ifNotBlank { exp + calc.symbol }
 			is CalcCOperation.Factorial -> exp.ifNotBlank { exp + calc.symbol }

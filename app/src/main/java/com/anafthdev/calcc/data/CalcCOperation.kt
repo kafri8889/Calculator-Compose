@@ -38,11 +38,20 @@ sealed class CalcCOperation {
 	
 	
 	
-	data class ArcSin(override val symbol: String = "sin -1"): CalcCOperation(), Calc
+	data class ArcSin(
+		override val symbol: String = "sin -1",
+		val operatorSymbol: String = "asin"
+	): CalcCOperation(), Calc
 	
-	data class ArcCos(override val symbol: String = "cos -1"): CalcCOperation(), Calc
+	data class ArcCos(
+		override val symbol: String = "cos -1",
+		val operatorSymbol: String = "acos"
+	): CalcCOperation(), Calc
 	
-	data class ArcTan(override val symbol: String = "tan -1"): CalcCOperation(), Calc
+	data class ArcTan(
+		override val symbol: String = "tan -1",
+		val operatorSymbol: String = "atan"
+	): CalcCOperation(), Calc
 	
 	data class InvLog(
 		override val symbol: String = "10 x",
