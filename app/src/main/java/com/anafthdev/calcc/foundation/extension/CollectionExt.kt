@@ -41,3 +41,13 @@ fun <T> Collection<T>.split(n: Int): Pair<Int, List<List<T?>>> {
 	
 	return splitSize to result
 }
+
+/**
+ * Returns a list element from given collection
+ * @author kafri8889
+ */
+inline fun <T, U> Collection<T>.getBy(selector: (T) -> U): List<U> {
+	val result = ArrayList<U>()
+	for (v in this) { result.add(selector(v)) }
+	return result
+}

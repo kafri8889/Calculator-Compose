@@ -5,6 +5,7 @@ inline fun String.ifNotBlank(defaultValue: () -> String): String =
 
 /**
  * replace char, A to B, B to A
+ * @author kafri8889
  */
 fun String.replaceAB(a: String, b: String): String {
 	val temp = replace(b, "~|~")
