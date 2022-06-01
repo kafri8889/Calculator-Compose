@@ -44,10 +44,19 @@ sealed class CalcCOperation {
 	
 	data class ArcTan(override val symbol: String = "tan -1"): CalcCOperation(), Calc
 	
-	data class InvLog(override val symbol: String = "10 ^"): CalcCOperation(), Calc
+	data class InvLog(
+		override val symbol: String = "10 x",
+		val operatorSymbol: String = "10^"
+	): CalcCOperation(), Calc
 	
-	data class InvSqrt(override val symbol: String = "x 2"): CalcCOperation(), Calc
+	data class InvSqrt(
+		override val symbol: String = "x 2",
+		val operatorSymbol: String = "#"
+	): CalcCOperation(), Calc
 	
-	data class InvNaturalLogarithm(override val symbol: String = "e x"): CalcCOperation(), Calc
+	data class InvNaturalLogarithm(
+		override val symbol: String = "e x",
+		val operatorSymbol: String = "e^"
+	): CalcCOperation(), Calc
 	
 }

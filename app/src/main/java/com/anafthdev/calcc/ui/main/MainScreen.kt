@@ -21,7 +21,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,6 +36,7 @@ import com.anafthdev.calcc.foundation.window.LocalComponentSize
 import com.anafthdev.calcc.ui.main.component.CalcCAdvancedButton
 import com.anafthdev.calcc.ui.main.component.CalcCButtons
 import com.anafthdev.calcc.ui.theme.fully_rounded
+import com.anafthdev.calcc.ui.theme.superscriptSpanStyle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,7 +109,19 @@ fun MainScreen() {
 				horizontalAlignment = Alignment.End
 			) {
 				Text(
-					text = expression,
+					text = buildAnnotatedString {
+						expression.forEach { c ->
+							if (c == '#') {
+								withStyle(
+									superscriptSpanStyle.copy(
+										fontSize = MaterialTheme.typography.bodyMedium.fontSize
+									)
+								) {
+									append("2")
+								}
+							} else append(c)
+						}
+					},
 					style = MaterialTheme.typography.headlineLarge,
 					modifier = Modifier
 						.horizontalScroll(

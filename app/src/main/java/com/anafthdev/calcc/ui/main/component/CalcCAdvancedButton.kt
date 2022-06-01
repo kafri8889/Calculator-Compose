@@ -1,5 +1,6 @@
 package com.anafthdev.calcc.ui.main.component
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -19,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anafthdev.calcc.data.Calc
 import com.anafthdev.calcc.foundation.extension.split
+import com.anafthdev.calcc.foundation.extension.toast
 import com.anafthdev.calcc.ui.theme.fully_rounded
+import com.anafthdev.calcc.ui.theme.superscriptSpanStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,12 +67,6 @@ private fun AdvanceButton(
 	
 	val calcSymbol = calc.symbol.split(" ")
 	
-	val superscript = SpanStyle(
-		baselineShift = BaselineShift.Superscript,
-		fontSize = MaterialTheme.typography.labelSmall.fontSize,
-		color = MaterialTheme.typography.bodyMedium.color
-	)
-	
 	Box(
 		contentAlignment = Alignment.Center,
 		modifier = modifier
@@ -98,7 +95,7 @@ private fun AdvanceButton(
 					text = buildAnnotatedString {
 						append(calcSymbol[0])
 						if (calcSymbol.size > 1) {
-							withStyle(superscript) {
+							withStyle(superscriptSpanStyle) {
 								append(calcSymbol[1])
 							}
 						}

@@ -1,5 +1,16 @@
 package com.anafthdev.calcc.foundation.extension
 
+inline fun String.ifNotBlank(defaultValue: () -> String): String =
+	if (isNotBlank()) defaultValue() else this
+
+/**
+ * replace char, A to B, B to A
+ */
+fun String.replaceAB(a: String, b: String): String {
+	val temp = replace(b, "~|~")
+	return temp.replace(a, b).replace("~|~", a)
+}
+
 /**
  * @author kafri8889
  */

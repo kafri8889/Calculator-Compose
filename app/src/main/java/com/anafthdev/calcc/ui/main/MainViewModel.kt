@@ -2,6 +2,7 @@ package com.anafthdev.calcc.ui.main
 
 import androidx.lifecycle.viewModelScope
 import com.anafthdev.calcc.data.*
+import com.anafthdev.calcc.foundation.extension.ifNotBlank
 import com.anafthdev.calcc.foundation.viewmodel.StatefulViewModel
 import com.anafthdev.calcc.ui.main.environment.IMainEnvironment
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,6 +79,11 @@ class MainViewModel @Inject constructor(
 			is CalcCOperation.Tan -> exp + "${calc.symbol}("
 			is CalcCOperation.Log -> exp + "${calc.symbol}("
 			is CalcCOperation.NaturalLogarithm -> exp + "${calc.symbol}("
+			is CalcCOperation.Pow -> exp.ifNotBlank { exp + calc.symbol }
+			is CalcCOperation.Factorial -> exp.ifNotBlank { exp + calc.symbol }
+			is CalcCOperation.InvSqrt -> exp.ifNotBlank { exp + calc.operatorSymbol }
+			is CalcCOperation.InvLog -> exp + calc.operatorSymbol
+			is CalcCOperation.InvNaturalLogarithm -> exp + calc.operatorSymbol
 			is CalcCOperation -> exp + calc.symbol
 			is CalcCAction.Percent -> exp + calc.symbol
 			is CalcCAction.Decimal -> exp + calc.symbol

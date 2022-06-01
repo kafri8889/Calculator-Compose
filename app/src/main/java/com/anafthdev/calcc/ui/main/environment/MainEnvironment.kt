@@ -4,6 +4,7 @@ import android.util.Log
 import com.anafthdev.calcc.data.Calc
 import com.anafthdev.calcc.data.CalcCAction
 import com.anafthdev.calcc.data.Operations
+import com.anafthdev.calcc.data.Parser
 import com.anafthdev.calcc.foundation.di.DiName
 import com.anafthdev.calcc.foundation.extension.find
 import com.anafthdev.calcc.foundation.extension.indexAll
@@ -17,9 +18,11 @@ import net.objecthunter.exp4j.function.Function
 import net.objecthunter.exp4j.operator.Operator
 import timber.log.Timber
 import java.lang.Exception
+import java.lang.Math.pow
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.math.log10
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 class MainEnvironment @Inject constructor(
@@ -60,6 +63,17 @@ class MainEnvironment @Inject constructor(
 	) {
 		override fun apply(vararg args: Double): Double {
 			return if (args[0].isInt()) factorial(args[0].toInt()).toDouble() else Double.NaN
+		}
+	}
+	
+	private val powTwoOperator = object : Operator(
+		"#",
+		1,
+		true,
+		PRECEDENCE_POWER
+	) {
+		override fun apply(vararg args: Double): Double {
+			return args[0].pow(2.0)
 		}
 	}
 	
@@ -113,71 +127,16 @@ class MainEnvironment @Inject constructor(
 					.operator(
 						percentOperator,
 						factorialOperator,
+						powTwoOperator
 					)
 					.build()
 					.evaluate()
 					.toString()
+					.replace("NaN", "")
 			} catch (e: Exception) {
 				""
 			}
 		)
-	}
-	
-	private fun parseSqrt(exp: String): String {
-		return try {
-			var result = exp
-			val sqrtIndex = result.indexAll('√').map { it + 1 }
-			val sqrtList = arrayListOf<String>()
-			
-			sqrtIndex.forEach { i ->
-				var sqrtV = "sqrt("
-				
-				if (result[i] == '(') {
-					var totalOpenBrackets = 0
-					val closeBrackets = result.find(')', i, result.length)
-					
-					for (c in result.substring(i)) {
-						if (c == '(') {
-							totalOpenBrackets++
-						} else if (c == ')') {
-							break
-						}
-					}
-					
-					if (closeBrackets.isNotEmpty()) {
-						sqrtV += "${result.substring(i, closeBrackets[totalOpenBrackets - 1] + 1)})"
-					}
-				} else {
-					val subResult = result.substring(i)
-					for ((iC, c) in subResult.withIndex()) {
-						if (c.isDigit()) {
-							sqrtV += c
-							if (iC == subResult.length-1) sqrtV += ')'
-						} else {
-							sqrtV += ')'
-							break
-						}
-					}
-				}
-				
-				sqrtList.add(
-					sqrtV
-				)
-			}
-			
-			sqrtList.forEach { s ->
-				result = result.replace(
-					oldValue = "√" + s.replace("sqrt(", "").let {
-						it.substring(0, it.length - 1)
-					},
-					newValue = s
-				)
-			}
-			
-			return result
-		} catch (e: Exception) {
-			exp
-		}
 	}
 	
 	private fun parseExpression(exp: String): String {
@@ -186,7 +145,7 @@ class MainEnvironment @Inject constructor(
 			result = result.replace(pair.first, pair.second)
 		}
 		
-		return parseSqrt(result)
+		return Parser.parseSqrt(result)
 	}
 	
 	private fun factorial(n: Int): Long {
