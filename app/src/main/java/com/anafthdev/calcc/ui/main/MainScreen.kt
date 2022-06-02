@@ -1,5 +1,6 @@
 package com.anafthdev.calcc.ui.main
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -17,12 +18,14 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.anafthdev.calcc.data.Calc
+import com.anafthdev.calcc.data.Operations
 import com.anafthdev.calcc.ui.main.component.CalcCAdvancedButton
 import com.anafthdev.calcc.ui.main.component.CalcCButtons
 import com.anafthdev.calcc.ui.theme.superscriptSpanStyle
@@ -100,15 +103,22 @@ fun MainScreen() {
 				Text(
 					text = buildAnnotatedString {
 						expression.forEach { c ->
-							if (c == '#') {
-								withStyle(
-									superscriptSpanStyle.copy(
-										fontSize = MaterialTheme.typography.bodyMedium.fontSize
-									)
-								) {
-									append("2")
+							when (c) {
+								Operations.InvSin.first[0] -> {
+									append("sin")
+									createSuperscript("-1")
 								}
-							} else append(c)
+								Operations.InvCos.first[0] -> {
+									append("cos")
+									createSuperscript("-1")
+								}
+								Operations.InvTan.first[0] -> {
+									append("tan")
+									createSuperscript("-1")
+								}
+								'#' -> createSuperscript("2")
+								else -> append(c)
+							}
 						}
 					},
 					style = MaterialTheme.typography.headlineLarge,
@@ -220,6 +230,18 @@ fun MainScreen() {
 					.padding(8.dp)
 			)
 		}
+	}
+}
+
+@SuppressLint("ComposableNaming")
+@Composable
+private fun AnnotatedString.Builder.createSuperscript(s: String) {
+	withStyle(
+		superscriptSpanStyle.copy(
+			fontSize = MaterialTheme.typography.bodyMedium.fontSize
+		)
+	) {
+		append(s)
 	}
 }
 

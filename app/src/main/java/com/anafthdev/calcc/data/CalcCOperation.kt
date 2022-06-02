@@ -40,17 +40,17 @@ sealed class CalcCOperation {
 	
 	data class ArcSin(
 		override val symbol: String = "sin -1",
-		val operatorSymbol: String = "asin"
+		val operatorSymbol: String = Operations.InvSin.first
 	): CalcCOperation(), Calc
 	
 	data class ArcCos(
 		override val symbol: String = "cos -1",
-		val operatorSymbol: String = "acos"
+		val operatorSymbol: String = Operations.InvCos.first
 	): CalcCOperation(), Calc
 	
 	data class ArcTan(
 		override val symbol: String = "tan -1",
-		val operatorSymbol: String = "atan"
+		val operatorSymbol: String = Operations.InvTan.first
 	): CalcCOperation(), Calc
 	
 	data class InvLog(
