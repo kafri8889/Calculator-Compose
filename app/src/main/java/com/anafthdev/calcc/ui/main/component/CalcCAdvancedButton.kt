@@ -36,7 +36,7 @@ fun CalcCAdvancedButton(
 	onUseDegOrRad: (Boolean) -> Unit
 ) {
 	
-	com.anafthdev.calcc.data.CalcCButtons.advancedButtons.split(5).second.forEachIndexed { i, list ->
+	com.anafthdev.calcc.data.CalcCButtons.advancedButtons.split(5).second.forEach { list ->
 		
 		Row(
 			verticalAlignment = Alignment.CenterVertically,
