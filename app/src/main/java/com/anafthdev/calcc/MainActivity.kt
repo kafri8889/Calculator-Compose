@@ -11,11 +11,20 @@ import com.anafthdev.calcc.foundation.window.getComponentSize
 import com.anafthdev.calcc.ui.main.MainScreen
 import com.anafthdev.calcc.ui.theme.CalcCTheme
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		if (BuildConfig.DEBUG) {
+			Timber.plant(object : Timber.DebugTree() {
+				override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+					super.log(priority, "DEBUG_$tag", message, t)
+				}
+			})
+		}
+		
 		setContent {
 			CalcCTheme {
 				Surface(

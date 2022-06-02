@@ -104,15 +104,27 @@ fun MainScreen() {
 					text = buildAnnotatedString {
 						expression.forEach { c ->
 							when (c) {
-								Operations.InvSin.first[0] -> {
+								Operations.INV_SIN.first[0] -> {
 									append("sin")
 									createSuperscript("-1")
 								}
-								Operations.InvCos.first[0] -> {
+								Operations.INV_COS.first[0] -> {
 									append("cos")
 									createSuperscript("-1")
 								}
-								Operations.InvTan.first[0] -> {
+								Operations.INV_TAN.first[0] -> {
+									append("tan")
+									createSuperscript("-1")
+								}
+								Operations.INV_SIN_DEGREES.first[0] -> {
+									append("sin")
+									createSuperscript("-1")
+								}
+								Operations.INV_COS_DEGREES.first[0] -> {
+									append("cos")
+									createSuperscript("-1")
+								}
+								Operations.INV_TAN_DEGREES.first[0] -> {
 									append("tan")
 									createSuperscript("-1")
 								}
@@ -205,8 +217,14 @@ fun MainScreen() {
 				) {
 					CalcCAdvancedButton(
 						isInverse = isInverse,
+						useDeg = useDeg,
 						onUpdateExpression = { calc ->
 							updateExpression(mainViewModel, expression, calc)
+						},
+						onUseDegOrRad = { mUseDeg ->
+							mainViewModel.dispatch(
+								MainAction.UpdateUseDegOrRad(mUseDeg)
+							)
 						}
 					)
 				}

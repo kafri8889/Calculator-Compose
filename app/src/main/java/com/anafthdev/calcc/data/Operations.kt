@@ -12,11 +12,23 @@ object Operations {
 	
 	val MULTIPLICATION = "x" to "*"
 	
-	val InvSin = "ˠ" to "asin"
+	val INV_SIN = "ˠ" to "asin"
 	
-	val InvCos = "〥" to "acos"
+	val INV_COS = "〥" to "acos"
 	
-	val InvTan = "ˠ" to "atan"
+	val INV_TAN = "ˁ" to "atan"
+	
+	val INV_SIN_DEGREES = "¤" to "ASIN"
+	
+	val INV_COS_DEGREES = "≭" to "ACOS"
+	
+	val INV_TAN_DEGREES = "⥿" to "ATAN"
+	
+	val SIN_DEGREES = "sin" to "Sin"
+	
+	val COS_DEGREES = "cos" to "Cos"
+	
+	val TAN_DEGREES = "tan" to "Tan"
 	
 	val values = listOf(
 		LOG_10,
@@ -24,8 +36,14 @@ object Operations {
 		PERCENT,
 		DIVISION,
 		MULTIPLICATION,
-		InvSin,
-		InvCos,
-		InvTan
+		INV_SIN,
+		INV_COS,
+		INV_TAN,
+		INV_SIN_DEGREES,
+		INV_COS_DEGREES,
+		INV_TAN_DEGREES,
+		SIN_DEGREES,
+		COS_DEGREES,
+		TAN_DEGREES
 	)
 }

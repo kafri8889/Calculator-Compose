@@ -6,24 +6,23 @@ import com.anafthdev.calcc.data.CalcCAction
 import com.anafthdev.calcc.data.Operations
 import com.anafthdev.calcc.data.Parser
 import com.anafthdev.calcc.foundation.di.DiName
-import com.anafthdev.calcc.foundation.extension.find
-import com.anafthdev.calcc.foundation.extension.indexAll
-import com.anafthdev.calcc.foundation.extension.isInt
+import com.anafthdev.calcc.foundation.extension.*
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
 import net.objecthunter.exp4j.function.Function
 import net.objecthunter.exp4j.operator.Operator
 import timber.log.Timber
 import java.lang.Exception
-import java.lang.Math.pow
+import java.lang.Math.toDegrees
+import java.lang.Math.toRadians
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.math.log10
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 class MainEnvironment @Inject constructor(
 	@Named(DiName.DISPATCHER_MAIN) override val dispatcher: CoroutineDispatcher
@@ -83,6 +82,50 @@ class MainEnvironment @Inject constructor(
 		}
 	}
 	
+	private val invSinDegrees = object : Function("ASIN") {
+		override fun apply(vararg args: Double): Double {
+			return toDegrees(asin(args[0]))
+		}
+	}
+	
+	private val invCosDegrees = object : Function("ACOS") {
+		override fun apply(vararg args: Double): Double {
+			return toDegrees(acos(args[0]))
+		}
+	}
+	
+	private val invTanDegrees = object : Function("ATAN") {
+		override fun apply(vararg args: Double): Double {
+			return toDegrees(atan(args[0]))
+		}
+	}
+	
+	private val sinDegrees = object : Function("Sin") {
+		override fun apply(vararg args: Double): Double {
+			return sin(toRadians(args[0]))
+		}
+	}
+	
+	private val cosDegrees = object : Function("Cos") {
+		override fun apply(vararg args: Double): Double {
+			return cos(toRadians(args[0]))
+		}
+	}
+	
+	private val tanDegrees = object : Function("Tan") {
+		override fun apply(vararg args: Double): Double {
+			return tan(toRadians(args[0]))
+		}
+	}
+	
+	init {
+		CoroutineScope(dispatcher).launch {
+			useDeg.collect {
+				calculate()
+			}
+		}
+	}
+	
 	override suspend fun setExpression(exp: String) {
 		_expression.emit(exp)
 	}
@@ -116,6 +159,8 @@ class MainEnvironment @Inject constructor(
 	}
 	
 	override suspend fun calculate() {
+		changeSymbol(useDeg.value)
+		
 		val parsedExpression = parseExpression(expression.value)
 		_calculationResult.emit(
 			try {
@@ -123,7 +168,15 @@ class MainEnvironment @Inject constructor(
 					if (parsedExpression.contains("(") and !parsedExpression.contains(")")) "$parsedExpression)"
 					else parsedExpression
 				)
-					.function(naturalLogarithmFunction)
+					.functions(
+						naturalLogarithmFunction,
+						invSinDegrees,
+						invCosDegrees,
+						invTanDegrees,
+						sinDegrees,
+						cosDegrees,
+						tanDegrees
+					)
 					.operator(
 						percentOperator,
 						factorialOperator,
@@ -134,6 +187,8 @@ class MainEnvironment @Inject constructor(
 					.toString()
 					.replace("NaN", "")
 			} catch (e: Exception) {
+				Timber.i("calculation error: ${e.message}")
+				Timber.i("parsedExpression: $parsedExpression")
 				""
 			}
 		)
@@ -141,17 +196,74 @@ class MainEnvironment @Inject constructor(
 	
 	private fun parseExpression(exp: String): String {
 		var result = exp
+		val sinCosTanDegrees = listOf(
+			Operations.SIN_DEGREES.first,
+			Operations.COS_DEGREES.first,
+			Operations.TAN_DEGREES.first,
+		)
+		
+		val invSinCosTanDegrees = listOf(
+			Operations.INV_SIN_DEGREES.first,
+			Operations.INV_COS_DEGREES.first,
+			Operations.INV_TAN_DEGREES.first,
+		)
+		
 		Operations.values.forEach { pair ->
-			result = result.replace(pair.first, pair.second)
+			if (pair.first.equalsOr(sinCosTanDegrees)) {
+				if (useDeg.value) {
+					result = result.replace(pair.first, pair.second)
+				}
+			} else if (pair.first.equalsOr(invSinCosTanDegrees)) {
+				if (useDeg.value) {
+					Timber.i("calculate: $pair")
+					result = result.replace(pair.first, pair.second)
+				} else {
+					val inv = when (pair.first) {
+						Operations.INV_SIN_DEGREES.first -> Operations.INV_SIN
+						Operations.INV_COS_DEGREES.first -> Operations.INV_COS
+						Operations.INV_TAN_DEGREES.first -> Operations.INV_TAN
+						else -> Operations.INV_SIN
+					}
+					
+					result = result.replace(inv.first, inv.second)
+				}
+			} else {
+				result = result.replace(pair.first, pair.second)
+			}
+			
+			Timber.i("calculate res: $result")
 		}
 		
 		return Parser.parseSqrt(result)
 	}
 	
-	private fun factorial(n: Int): Long {
-		if (n == 0) {
-			return 1
+	private fun changeSymbol(useDeg: Boolean) {
+		var result = expression.value
+		val symbolsRad = listOf(
+			Operations.INV_SIN,
+			Operations.INV_COS,
+			Operations.INV_TAN
+		)
+		
+		val symbolsDeg = listOf(
+			Operations.INV_SIN_DEGREES,
+			Operations.INV_COS_DEGREES,
+			Operations.INV_TAN_DEGREES
+		)
+		
+		symbolsRad.forEachIndexed { i, pair ->
+			result = if (useDeg) {
+				result.replace(pair.first, symbolsDeg[i].first)
+			} else {
+				result.replace(symbolsDeg[i].first, pair.first)
+			}
 		}
+		
+		_expression.tryEmit(result)
+	}
+	
+	private fun factorial(n: Int): Long {
+		if (n == 0) return 1
 		
 		return factorial(n - 1) * n
 	}

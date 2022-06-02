@@ -68,6 +68,11 @@ class MainViewModel @Inject constructor(
 					environment.setExpression(action.expression)
 				}
 			}
+			is MainAction.UpdateUseDegOrRad -> {
+				viewModelScope.launch(environment.dispatcher) {
+					if (action.useDeg) environment.useDeg() else environment.useRad()
+				}
+			}
 		}
 	}
 	

@@ -4,6 +4,21 @@ inline fun String.ifNotBlank(defaultValue: () -> String): String =
 	if (isNotBlank()) defaultValue() else this
 
 /**
+ * ex:
+ * strings = ["ab", "cd"]
+ * "cd".equalsOr(strings) => true
+ * "ab".equalsOr(strings) => true
+ * "ef".equalsOr(strings) => false
+ */
+fun String.equalsOr(strings: List<String>, ignoreCase: Boolean = false): Boolean {
+	strings.forEach {
+		if (contentEquals(it, ignoreCase)) return true
+	}
+	
+	return false
+}
+
+/**
  * replace char, A to B, B to A
  * @author kafri8889
  */
